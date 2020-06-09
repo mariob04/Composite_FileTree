@@ -15,7 +15,7 @@ namespace Composite_FileTree
             this.Root = new Directory(rootDirectory);
             this.CurrentDir = Root;
         }
-        internal FileItem AddFile(string name, int size)
+        public FileItem AddFile(string name, int size)
         {
             var file = new FileItem(name, size);
             CurrentDir.Add(file);
@@ -42,7 +42,7 @@ namespace Composite_FileTree
                     dirStack.Push(item);
                 }
             }
-            throw new InvalidOperationException($"Directory name: '{ currentDirName }'");
+            throw new InvalidOperationException($"Directory name: '{ currentDirName }' not found!");
         }
         internal Directory AddDirectory(string name)
         {
