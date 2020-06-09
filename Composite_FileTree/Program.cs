@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
 
 namespace Composite_FileTree
 {
@@ -9,27 +11,22 @@ namespace Composite_FileTree
         static void Main(string[] args)
         {
             //Add root Dir, folders and files to make up a tree
-            var root = new Directory("Root");
-            var folder1 = new Directory("Folder 1");
-            var folder2 = new Directory("Folder 2");
 
-            root.Add(folder1);
-            root.Add(folder2);
+            var builder = new SystemBuilder("root");
+            builder.AddDirectory("Folder1");
+            builder.AddFile("knjiga.txt", 18000);
+            builder.AddFile("video.mkv", 520000);
+            builder.AddDirectory("SubFolder");
+            builder.AddFile("Music.mp3", 19000);
+            builder.AddFile("Resume.pdf", 9000);
+            builder.SetCurrentDirectory("root");
+            builder.AddDirectory("Folder2");
+            builder.AddFile("winfile.dll", 250000);
+            builder.AddFile("WinApp.exe", 87000000);
 
-            folder1.Add(new FileItem("Seminar.txt", 12000));
-            folder1.Add(new FileItem("Film.mkv", 1200000));
+            Console.WriteLine($"Total size of (root): { builder.Root.GetSizeinKB() } KB");
 
-            var subfolder1 = new Directory("Sub Folder 1");
-            subfolder1.Add(new FileItem("Music.mp3", 40000));
-            subfolder1.Add(new FileItem("Skripta.pdf", 12000));
-            folder1.Add(subfolder1);
-
-            folder2.Add(new FileItem("SystemFile.dll", 342099));
-            folder2.Add(new FileItem("winfile.dll", 782099));
-
-            Console.WriteLine($"Total size of (root): { root.GetSizeinKB() } KB");
-            Console.WriteLine($"Total size of (folder 1): { folder1.GetSizeinKB() }KB");
-            Console.WriteLine($"Total size of (folder 2): { folder2.GetSizeinKB() }KB");
+            Console.WriteLine(JsonConvert.SerializeObject(builder.Root, Newtonsoft.Json.Formatting.Indented));
         }
     }
 }
